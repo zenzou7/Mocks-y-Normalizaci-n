@@ -12,6 +12,8 @@ const conexion = async () => {
   await connection();
 };
 
+conexion();
+
 class ContenedorMongo {
   constructor(ruta) {
     this.ruta = ruta;

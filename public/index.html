@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="https://cdn.jsdelivr.net/npm/normalizr@3.6.1/dist/normalizr.browser.js">
+      const denormalize = denormalize();
+    </script>
+    <title>Desafio mocks y normalizacion</title>
+  </head>
+  <body>
+    <h1>Productos Aleatorios</h1>
+    <div id="productos">
+      <table id="productos__table">
+        <tr>
+          <td>Nombre</td>
+          <td>Precio</td>
+          <td>Imagen</td>
+        </tr>
+      </table>
+    </div>
+
+    <form onsubmit="sendMsg();return false;">
+      <input id="nombre" placeholder="Nombre" required />
+      <input id="apellido" placeholder="Apellido" required />
+      <input id="edad" placeholder="Edad" required /><br />
+      <input id="email" placeholder="Email" required /><br />
+      <input id="avatar" placeholder="avatar" required /><br />
+      <input id="msg" placeholder="Mensaje" />
+      <input type="submit" value="ENVIAR!" />
+    </form>
+    <div id="messages"></div>
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="./index.js"></script>
+  </body>
+</html>

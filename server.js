@@ -4,7 +4,7 @@ const { Router } = require('express');
 const router = Router();
 
 const multer = require('multer');
-const { normalize } = require('path');
+const { normalize, schema } = require('normalizr');
 const upload = multer();
 
 const daoMemoria = require('./src/DAO/daoMemoriaProductos.js');
@@ -32,14 +32,14 @@ app.set('view engine', 'ejs');
 
 app.use('/api/productos', router);
 
-app.get('/', async (req, res) => {
+/* app.get('/', async (req, res) => {
   try {
     const prods = await classProductos.getAll();
     res.render('pages/productos', { products: prods });
   } catch (err) {
     console.log(err);
   }
-});
+}); */
 
 router.get('/', async (req, res) => {
   try {
@@ -68,7 +68,7 @@ router.get('/test', async (req, res) => {
   try {
     const prods = await classProductos.getAll();
 
-    res.render('pages/productos', { products: prods });
+    res.json(prods);
   } catch (err) {
     console.log(err);
   }
@@ -89,7 +89,6 @@ io.on('connection', async (socket) => {
         nombre: data.nombre,
         apellido: data.apellido,
         edad: data.edad,
-        alias: data.alias,
         avatar: data.avatar,
       },
       text: {
@@ -108,8 +107,8 @@ io.on('connection', async (socket) => {
       mensaje: mensaje,
     });
     const normalizado = normalize(msg, chat);
-    console.log(normalizado);
-    io.sockets.emit('msg-list', { normalizado: normalizado, schema: chat });
+
+    io.sockets.emit('msg-list', { normalizado: normalizado });
   });
 
   socket.on('sendTable', async (data) => {

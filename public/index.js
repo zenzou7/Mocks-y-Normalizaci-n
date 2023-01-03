@@ -1,4 +1,22 @@
-const { denormalize } = require('normalizr');
+const prodTable = document.getElementById('productos__table');
+
+const mostrarProds = () => {
+  fetch('http://localhost:8080/api/productos/test')
+    .then((response) => response.json())
+    .then((data) =>
+      data.forEach((data) => {
+        let prod = document.createElement('tr');
+        prod.innerHTML += `
+        <td>${data.name}</td>
+        <td>${data.price}</td>
+        <td><img src="${data.thumbnail}"></td>`;
+
+        prodTable.append(prod);
+      })
+    );
+};
+
+mostrarProds();
 
 const socket = io();
 socket.on('connect', () => {
@@ -15,14 +33,23 @@ function sendMsg() {
   socket.emit('msg', { nombre: nombre, apellido: apellido, edad: edad, avatar: avatar, email: email, mensaje: msg });
 }
 
+const schema = normalizr.schema;
+const denormalize = normalizr.denormalize;
+const authorSchema = new schema.Entity('authors');
+
 socket.on('msg-list', (data) => {
   let mensaje = document.getElementById('messages');
   mensaje.innerHTML = ``;
-
-  const schema = data.schema;
+  console.log(data);
+  const user = new normalizr.schema.Entity('author');
+  const mensajes = new normalizr.schema.Entity('mensajes');
+  const chat = new normalizr.schema.Entity('chat', {
+    author: user,
+    mensaje: mensajes,
+  });
   const normalizado = data.normalizado;
 
-  const desnormalizado = denormalize(normalizado, schema, normalizado.entities);
+  const desnormalizado = denormalize(normalizado, chat, normalizado.entities);
   desnormalizado.forEach((obj) => {
     let html = '';
 
