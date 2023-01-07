@@ -68,7 +68,8 @@ router.get('/test', async (req, res) => {
   try {
     const prods = await classProductos.getAll();
 
-    res.json(prods);
+    res.render('pages/form', { products: prods });
+    /* res.json(prods); */
   } catch (err) {
     console.log(err);
   }
